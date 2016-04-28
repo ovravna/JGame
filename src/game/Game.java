@@ -82,7 +82,7 @@ public class Game extends Canvas implements Runnable {
         frame.pack();
 
         frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
+        frame.setLocation(100,100);
         frame.setVisible(true);
         this.start();
 
@@ -98,7 +98,8 @@ public class Game extends Canvas implements Runnable {
         thread.start();
 
         if (!isApplet) {
-            if (JOptionPane.showConfirmDialog(this, "Server?") == 0) {
+            //JOptionPane.showConfirmDialog(this, "Server?") == 0
+            if (true) {
                 socketServer.start();
             }
 

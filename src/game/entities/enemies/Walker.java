@@ -46,23 +46,25 @@ public class Walker extends Enemy implements Actable{
             return;
         }
 
-        xp = level.getPlayer().x;
-        yp = level.getPlayer().y;
+        if (level.getPlayer() != null) {
+            xp = level.getPlayer().x;
+            yp = level.getPlayer().y;
 
-        double distanceSqrd = (xp-x)*(xp-x)+(yp-y)*(yp-y);
+            double distanceSqrd = (xp-x)*(xp-x)+(yp-y)*(yp-y);
 
 
-        if (Math.abs(distanceSqrd) < 40000 && tickCount%5 < 2) {
-            if (Math.abs(xp-x) != 0) {
-                xa = (xp-x)/Math.abs(xp-x);
-            } else xa = 0;
+            if (Math.abs(distanceSqrd) < 40000 && tickCount%5 < 2) {
+                if (Math.abs(xp-x) != 0) {
+                    xa = (xp-x)/Math.abs(xp-x);
+                } else xa = 0;
 
-            if (Math.abs(yp-y) != 0) {
-                ya = (yp-y)/Math.abs(yp-y);
-            } else ya = 0;
-        } else {
-            xa = 0;
-            ya = 0;
+                if (Math.abs(yp-y) != 0) {
+                    ya = (yp-y)/Math.abs(yp-y);
+                } else ya = 0;
+            } else {
+                xa = 0;
+                ya = 0;
+            }
         }
 
 

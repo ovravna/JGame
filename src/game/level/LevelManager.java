@@ -44,6 +44,7 @@ public class LevelManager extends InputManager {
         //kake er godt
 
         this.server.setLevelManager(this);
+        this.client.setLevelManager(this);
 
         addLevel(level);
         super.setInput(input);
@@ -97,7 +98,8 @@ public class LevelManager extends InputManager {
                 testLevel.setFilterColor(-0xfa);
 
                 PlayerMP player = new PlayerMP(testLevel, 0, 0, "Kake", null, -1, true);
-                Packet00Login packet = new Packet00Login(player.getUsername());
+                System.out.println("Player LM "+player);
+                Packet00Login packet = new Packet00Login(player.getUsername(), player.x, player.y);
 
                 if (server != null) {
                     server.addConnection(player, packet);

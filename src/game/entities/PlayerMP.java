@@ -10,13 +10,13 @@ public class PlayerMP extends Player {
 
 
     private final String username;
-    public InetAddress ipaddress;
+    public InetAddress ipAddress;
     public int port;
 
-    public PlayerMP(Level level, int x, int y, String username, InetAddress ipaddress, int port, boolean isLocal) {
+    public PlayerMP(Level level, int x, int y, String username, InetAddress ipAddress, int port, boolean isLocal) {
         super(level, x, y, isLocal);
         this.username = username;
-        this.ipaddress = ipaddress;
+        this.ipAddress = ipAddress;
         this.port = port;
     }
 
@@ -28,5 +28,9 @@ public class PlayerMP extends Player {
 
     public String getUsername() {
         return username;
+    }
+
+    public void addToLevel() {
+        level.addEntity(this);
     }
 }

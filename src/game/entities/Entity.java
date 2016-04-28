@@ -40,7 +40,9 @@ public abstract class Entity implements Comparable{
 
     public Entity(Level level) {
         init(level);
-        level.addEntities(this);
+        if (!(this instanceof PlayerMP)) {
+            level.addEntity(this);
+        }
     }
 
     private final void init(Level level) {
