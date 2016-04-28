@@ -245,9 +245,13 @@ public class LevelManager extends InputManager {
 
     public void setServer(GameServer server) {
         this.server = server;
+        this.server.setLevelManager(this);
+
     }
 
     public void setClient(GameClient client) {
         this.client = client;
+        this.client.setLevelManager(this);
+
     }
 }

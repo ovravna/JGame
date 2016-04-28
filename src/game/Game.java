@@ -87,7 +87,6 @@ public class Game extends Canvas implements Runnable {
             socketClient.start();
         }
 
-
         levelManager.setServer(socketServer);
         levelManager.setClient(socketClient);
     }
