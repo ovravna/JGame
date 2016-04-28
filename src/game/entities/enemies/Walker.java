@@ -49,8 +49,7 @@ public class Walker extends Enemy implements Actable{
         xp = level.getPlayer().x;
         yp = level.getPlayer().y;
 
-        double distanceSqrd = Math.pow(x-xp, 2)+Math.pow(y-yp, 2);
-
+        double distanceSqrd = (xp-x)*(xp-x)+(yp-y)*(yp-y);
 
 
         if (Math.abs(distanceSqrd) < 40000 && tickCount%5 < 2) {

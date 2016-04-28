@@ -79,7 +79,7 @@ public class Lighting {
         for (int xa = xMin;xa < xMax;xa++) {
             for (int ya = yMin;ya < yMax;ya++) {
 
-                distance = Math.pow(xa-x, 2)+Math.pow(ya-y, 2);
+                distance = (xa-x)*(xa-x) + (ya-y)*(ya-y);
 
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
                 if (distance < radSqur) {
@@ -145,7 +145,8 @@ public class Lighting {
         for (int xa = xMin;xa < xMax;xa++) {
             for (int ya = yMin;ya < yMax;ya++) {
 
-                distance = Math.pow(xa-x, 2)+Math.pow(ya-y, 2);
+                distance = (xa-x)*(xa-x)+(ya-y)*(ya-y);
+
 
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
 
