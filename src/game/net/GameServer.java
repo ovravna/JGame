@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GameServer extends Thread {
 
-    public static final int PORT = 1331;
+    public static final int PORT = 1332;
 
     private DatagramSocket socket;
     private Game game;
@@ -28,6 +28,7 @@ public class GameServer extends Thread {
 
     public GameServer(Game game) {
         this.game = game;
+
         try {
             this.socket = new DatagramSocket(PORT);
         } catch (SocketException e) {

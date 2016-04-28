@@ -2,7 +2,6 @@ package game;
 
 import game.gfx.Screen;
 import game.gfx.SpriteSheet;
-import game.level.Level;
 import game.level.LevelManager;
 import game.level.Lighting;
 import game.net.GameClient;
@@ -21,7 +20,7 @@ public class Game extends Canvas implements Runnable {
     public static final int WIDTH = 120;
     public static final int HEIGHT = WIDTH/12*9;
     public static final int SCALE = 10;
-    private static String name;
+    private static String name = "Game";
     public static int entities;
     private JFrame frame;
 
@@ -44,27 +43,10 @@ public class Game extends Canvas implements Runnable {
     private int ticks;
 
     public Game() {
-        this("Game", null);
-    }
-
-    public Game(String name) {
-        this(name, null);
-    }
-
-    public Game(String name, Level level) {
-        Game.name = name;
 
         screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/8x8font.png"));
         screen.sheet.setFontLine(1);
         screen.sheet.setPlayerLine(10);
-
-
-
-        socketServer = new GameServer(this);
-        socketClient = new GameClient(this, "localhost");
-
-        levelManager = new LevelManager(screen, new InputHandler(this), level, socketServer, socketClient);
-
 
     }
 
@@ -86,27 +68,28 @@ public class Game extends Canvas implements Runnable {
         frame.setVisible(true);
         this.start();
 
-        if (!isApplet) {
-//            Packet00Login loginPacket = new Packet00Login("Player");
-//            loginPacket.writeData(socketClient);
-        }
     }
 
     public synchronized void start() {
         running = true;
         thread = new Thread(this);
+
+        levelManager = new LevelManager(screen, new InputHandler(this));
         thread.start();
 
         if (!isApplet) {
-            //JOptionPane.showConfirmDialog(this, "Server?") == 0
-            if (true) {
+            if (JOptionPane.showConfirmDialog(this, "Server?") == 0) {
+                socketServer = new GameServer(this);
                 socketServer.start();
             }
 
+            socketClient = new GameClient(this, "localhost");
             socketClient.start();
         }
 
 
+        levelManager.setServer(socketServer);
+        levelManager.setClient(socketClient);
     }
 
     public synchronized void stop() {

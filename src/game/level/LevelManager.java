@@ -34,25 +34,34 @@ public class LevelManager extends InputManager {
 
 
     public LevelManager(Screen screen, InputHandler input) {
-        this(screen, input, null, null, null);
+        this(screen, input, null, null);
     }
 
-    public LevelManager(Screen screen, InputHandler input, Level level, GameServer server, GameClient client) {
+    public LevelManager(Screen screen, InputHandler input, GameServer server, GameClient client) {
         this.screen = screen;
         this.server = server;
         this.client = client;
         //kake er godt
 
-        this.server.setLevelManager(this);
-        this.client.setLevelManager(this);
 
-        addLevel(level);
+        if (this.server != null) {
+            this.server.setLevelManager(this);
+        }
+
+        if (this.client != null) {
+            this.client.setLevelManager(this);
+        }
+
+//        addLevel(level);
         super.setInput(input);
         currentLevelType = MENU;
         System.out.println("LevelManger initilized");
         loadLevel(currentLevelType);
         testLevel = new Level(this, Sokoban.LEVEL);
     }
+
+
+
 
     public void loadLevel(Level level) {
         currentLevel = level;
@@ -97,15 +106,27 @@ public class LevelManager extends InputManager {
                 testLevel.isRenderingLight(true);
                 testLevel.setFilterColor(-0xfa);
 
+//                PlayerMP player = new PlayerMP(testLevel, 0, 0, "Kake", null, -1, true);
+//                System.out.println("Player LM "+player);
+//                Packet00Login packet = new Packet00Login(player.getUsername(), player.x, player.y);
+//
+//                if (server != null) {
+//                    server.addConnection(player, packet);
+//                }
+//
+//                packet.writeData(client);
+
+
                 PlayerMP player = new PlayerMP(testLevel, 0, 0, "Kake", null, -1, true);
-                System.out.println("Player LM "+player);
-                Packet00Login packet = new Packet00Login(player.getUsername(), player.x, player.y);
+                player.addToLevel();
 
+                Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.x, player.y);
                 if (server != null) {
-                    server.addConnection(player, packet);
+                    server.addConnection(player, loginPacket);
                 }
+                loginPacket.writeData(client);
 
-                packet.writeData(client);
+
 
 
                 new Lantern(testLevel, 10, 10);
@@ -222,4 +243,11 @@ public class LevelManager extends InputManager {
 
     }
 
+    public void setServer(GameServer server) {
+        this.server = server;
+    }
+
+    public void setClient(GameClient client) {
+        this.client = client;
+    }
 }

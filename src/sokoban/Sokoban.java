@@ -64,7 +64,7 @@ public class Sokoban {
 
 
     public Sokoban() {
-        new Game("Sokoban");
+        new Game();
     }
 
 

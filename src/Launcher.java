@@ -5,7 +5,7 @@ import java.awt.*;
 public class Launcher extends Applet {
 
 
-    private static Game game = new Game("Game");
+    private static Game game = new Game();
 
     @Override
     public void init() {
