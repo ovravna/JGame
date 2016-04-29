@@ -32,7 +32,7 @@ public class GameServer extends Thread {
         try {
             this.socket = new DatagramSocket(PORT);
         } catch (SocketException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -43,7 +43,7 @@ public class GameServer extends Thread {
             try {
                 socket.receive(packet);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
             this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
         }

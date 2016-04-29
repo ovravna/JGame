@@ -136,13 +136,18 @@ public class Screen {
                     xSheet = block-x-1;
                 int xPixel = x+xPos+(x*scaleMap)-((scaleMap << logBlock)/2);
 
-                int col = sheet.pixels[xSheet+(ySheet*sheet.width)+tileOffset];
+                Integer col = sheet.pixels[xSheet+(ySheet*sheet.width)+tileOffset];
 
 
                 if (!ignoreColors.contains(col)) {
 
-                    if (mapColors && colorMap.containsKey(col)) col = colorMap.get(col);
+                    if (mapColors && colorMap.containsKey(col)) {
+                        col = colorMap.get(col);
+                    }
                     if (setAllColors) col = fillColor;
+                    if (col == null) {
+                        continue;
+                    }
 
                     for (int yScale = 0;yScale < scale;yScale++) {
                         if (yPixel+yScale < 0 || yPixel+yScale >= height)

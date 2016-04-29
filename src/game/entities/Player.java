@@ -60,8 +60,10 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         solid = true;
         dimentions = new int[]{7, 0, 7, 3};
         int col = (int) (0xffffff*Math.random());
+        int skinCol = Arrays.asList(0xffd2a8, 0x722E02).get((int)Math.round(Math.random()));
         if (level.screen != null) {
             level.screen.putColorMap(this, 0xc0a1ff, col);
+            level.screen.putColorMap(this, 0xffd2a8, skinCol);
 
             //0xff0000
 
