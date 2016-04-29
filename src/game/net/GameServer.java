@@ -1,7 +1,5 @@
 package game.net;
 
-//import java.util.*;
-
 import game.Game;
 import game.entities.PlayerMP;
 import game.level.LevelManager;

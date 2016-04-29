@@ -41,6 +41,8 @@ public class Walker extends Enemy implements Actable{
     @Override
     public void tick() {
 
+        fillColor = null;
+
         if (dying >= 12) {
             level.removeEntity(this);
         }
@@ -123,8 +125,7 @@ public class Walker extends Enemy implements Actable{
         int yOffset = y-modifier/2-4;
 
         if (isSwimming) {
-            List<Integer> waterColor = new ArrayList<>(Arrays.asList(Screen.BLANK, 0x4444ff, 0x0000ff, 0x8888ff));
-
+            List<Integer> waterColor = ((ArrayList) Arrays.asList(Screen.BLANK, 0x4444ff, 0x0000ff, 0x8888ff));
             yOffset += 4;
             if ((tickCount%60)/15 == 0) {
                 waterColor.remove(1);
@@ -147,6 +148,10 @@ public class Walker extends Enemy implements Actable{
         if (killed || dying > 0) {
             level.lighting.renderRoundLight(xOffset, yOffset, ((int) (0.3*dying*dying)), -0xaa, 8, 4, this);
 
+            if (tickCount%2 == 0) {
+                fillColor = 0x000000;
+            } else fillColor = Screen.BLANK;
+
             dying++;
         }
 
@@ -167,6 +172,8 @@ public class Walker extends Enemy implements Actable{
         life -= projectile.damage;
 
         shooter.shotHit(this);
+
+        fillColor = 0xffffff;
 
         if (life <= 0) {
             if (!killed) {
