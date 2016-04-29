@@ -12,7 +12,7 @@ public class Bullet extends Projectile {
 
     private int aliveTime = 50;
     private int lenght = 10;
-    private double rad = 2;
+    private double rad = 0;
 
     public Bullet(Level level, int x, int y, int xv, int yv, Shooter shooter) {
         super(level, x, y, xv, yv, 4, shooter);
@@ -30,7 +30,7 @@ public class Bullet extends Projectile {
             x += xv*speed;
             y += yv*speed;
         } else if (!(getEntity(x, y) instanceof Projectile)) {
-            rad += 0.5;
+            rad += 0.8;
             aliveTime -= 8;
         }
 
@@ -48,7 +48,7 @@ public class Bullet extends Projectile {
         // TODO: 26.04.2016 something wrong with render
         screen.render(((int) (x+xv*lenght))-3, ((int) (y+yv*lenght))-8, sheet, 2, 0, 1, 16, this);
 
-//        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), 1, -0xaa, this);
+        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), ((int) rad), -0xaa, this);
 
     }
 

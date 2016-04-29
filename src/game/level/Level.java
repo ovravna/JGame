@@ -28,6 +28,7 @@ public class Level {
     private String imagePath;
     private BufferedImage image;
     private Player player;
+    private List<Player> players = new ArrayList<>();
     public Lighting lighting;
 
     public static HashMap<Integer, Tile> tileColors = new HashMap<>();
@@ -219,6 +220,8 @@ public class Level {
 
     public Player getPlayer() {
         return player;
+
+
     }
 
     public void addEntity(Entity entity) {

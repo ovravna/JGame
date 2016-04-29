@@ -25,6 +25,7 @@ public class Walker extends Enemy implements Actable{
     private static int speed = 1;
     private int life = 1000;
     private boolean killed;
+    private int dying = 0;
 
     public Walker(Level level, int x, int y) {
         super(level, x, y, speed);
@@ -32,16 +33,25 @@ public class Walker extends Enemy implements Actable{
         dimentions = new int[]{12, 0, 12, 0};
         damage = 20;
         level.screen.putColorMap(this, 0xffd2a8, 0x33aa00);
+        level.screen.putColorMap(this, 0x5A3825, 0x010101);
+
+
     }
 
     @Override
     public void tick() {
 
+        if (dying >= 12) {
+            level.removeEntity(this);
+        }
 
-        if (sleep > 0) {
+        if (sleep > 0 || dying > 0) {
+            solid = false;
             sleep--;
             return;
-        }
+        } else solid = true;
+
+
 
         if (level.getPlayer() != null) {
             xp = level.getPlayer().x;
@@ -134,6 +144,12 @@ public class Walker extends Enemy implements Actable{
 
         }
 
+        if (killed || dying > 0) {
+            level.lighting.renderRoundLight(xOffset, yOffset, ((int) (0.3*dying*dying)), -0xaa, 8, 4, this);
+
+            dying++;
+        }
+
 
         screen.render(xOffset+(modifier*flipTop), yOffset, xTile+yTile*(screen.sheet.width >> 3), flipTop, scale, this);
 
@@ -157,7 +173,6 @@ public class Walker extends Enemy implements Actable{
                 shooter.shotKilled(this);
                 killed = true;
             }
-            level.removeEntity(this);
         }
     }
 

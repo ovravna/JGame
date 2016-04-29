@@ -166,7 +166,6 @@ public class Screen {
 
 
     public void setLighting(Lighting lighting) {
-        System.out.println("Screen "+lighting);
         this.lighting = lighting;
     }
 

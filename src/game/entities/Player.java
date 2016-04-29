@@ -60,10 +60,17 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         solid = true;
         dimentions = new int[]{7, 0, 7, 3};
         int col = (int) (0xffffff*Math.random());
-        int skinCol = Arrays.asList(0xffd2a8, 0x722E02).get((int)Math.round(Math.random()));
+        int skinCol = Arrays.asList(0xffd2a8, 0x722E02).get((int) Math.round(Math.random()));
+        int hairCol;
+        if (skinCol == 0xffd2a8) {
+            hairCol = Math.random() < 0.3 ? 0xE25A02:0x010101;
+        } else hairCol =  0x010101;
         if (level.screen != null) {
             level.screen.putColorMap(this, 0xc0a1ff, col);
             level.screen.putColorMap(this, 0xffd2a8, skinCol);
+            level.screen.putColorMap(this, 0x5A3825, hairCol);
+//            level.screen.putColorMap(this, 0x070707, null);
+
 
             //0xff0000
 
@@ -124,7 +131,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             if (input.left.isPressed()) xa--;
             if (input.right.isPressed()) xa++;
             if (input.act.isToggled()) act();
-            if (input.jump.isToggled() && !isSwimming) {
+            if (input.jump.isToggled() && !isSwimming && !isJumping) {
 
                 projetileIndex++;
                 projetileIndex %= 2;
@@ -171,7 +178,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
                     new UltraRay(level, x, y, dir.get(0), dir.get(1), this);
                     break;
                 case BULLET:
-                    if (tickCount % 18 == 1)
+                    if (tickCount % 60 == 1)
                         new Bullet(level, x, y, dir.get(0), dir.get(1), this);
                     break;
             }
