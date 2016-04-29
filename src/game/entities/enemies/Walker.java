@@ -12,7 +12,6 @@ import sokoban.cells.Actable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class Walker extends Enemy implements Actable{
@@ -32,9 +31,7 @@ public class Walker extends Enemy implements Actable{
         solid = true;
         dimentions = new int[]{12, 0, 12, 0};
         damage = 20;
-        level.screen.putColorMap(this, new HashMap<Integer, Integer>(){{
-            put(0xffd2a8, 0x33aa00);
-        }});
+        level.screen.putColorMap(this, 0xffd2a8, 0x33aa00);
     }
 
     @Override

@@ -12,7 +12,7 @@ public abstract class Projectile extends Mob {
     protected double xv;
     protected double yv;
 
-    protected int aliveTime;
+    protected int aliveTime = 50;
 
 
     public Projectile(Level level, int x, int y, int xv, int yv, int speed,  Shooter shooter) {

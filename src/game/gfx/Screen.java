@@ -46,12 +46,27 @@ public class Screen {
     }
 
 
+    public void putColorMap(Entity entity, Integer from, Integer to) {
+        putColorMap(entity, new HashMap<Integer, Integer>() {{
+            put(from, to);
+        }});
+    }
+
     public void putColorMap(Entity entity, Map<Integer, Integer> colorMap) {
-        entityColorMap.put(entity, colorMap);
+        if (!entityColorMap.containsKey(entity)) {
+            entityColorMap.put(entity, colorMap);
+        } else {
+            entityColorMap.get(entity).putAll(colorMap);
+        }
     }
 
     public void putIgonreColorMap(Entity entity, List<Integer> ignoreColors) {
-        entityIgnoreColorMap.put(entity, ignoreColors);
+        if (!entityIgnoreColorMap.containsKey(entity)) {
+            entityIgnoreColorMap.put(entity, ignoreColors);
+        } else {
+            entityIgnoreColorMap.get(entity).addAll(ignoreColors);
+        }
+
     }
 
 

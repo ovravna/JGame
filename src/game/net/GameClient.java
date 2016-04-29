@@ -36,7 +36,9 @@ public class GameClient extends Thread {
             byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
+                System.err.println("START RUN IN CLIENT");
                 socket.receive(packet);
+                System.err.println("CONTINUE RUN IN CLIENT");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,6 +55,7 @@ public class GameClient extends Thread {
             case INVALID:
                 break;
             case LOGIN:
+                System.err.println("Login!");
                 packet = new Packet00Login(data);
                 handleLogin((Packet00Login) packet, address, port);
                 break;

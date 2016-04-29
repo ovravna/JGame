@@ -15,9 +15,10 @@ public class Bullet extends Projectile {
     private double rad = 2;
 
     public Bullet(Level level, int x, int y, int xv, int yv, Shooter shooter) {
-        super(level, x, y, xv, yv, 3, shooter);
-        this.damage = 1;
-//        sheet = new SpriteSheet("/box16x16.png");
+        super(level, x, y, xv, yv, 4, shooter);
+        this.damage = 100;
+        this.aliveTime = 50;
+        sheet = new SpriteSheet("/box16x16.png");
         solid = true;
         dimentions = new int[]{8, 4, 8, 4};
     }
@@ -45,10 +46,9 @@ public class Bullet extends Projectile {
     public void render(Screen screen) {
 
         // TODO: 26.04.2016 something wrong with render
-//        screen.render(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), sheet, 0, 0, 0, 16, this);
+        screen.render(((int) (x+xv*lenght))-3, ((int) (y+yv*lenght))-8, sheet, 2, 0, 1, 16, this);
 
-
-        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), 1, -0xaa, this);
+//        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), 1, -0xaa, this);
 
     }
 

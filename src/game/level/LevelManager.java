@@ -207,12 +207,12 @@ public class LevelManager extends InputManager {
 
         switch (currentLevelType) {
             case TEST:
-//                if (Game.tickCount%20 == 0) {
-//                    int[] pos = randomEdgePos();
-//
-//                    new Walker(currentLevel,pos[0],pos[1]);
-//
-//                }
+                if (Game.tickCount%40 == 0) {
+                    int[] pos = randomEdgePos();
+
+                    new Walker(currentLevel,pos[0],pos[1]);
+
+                }
                 break;
             default:
         }
@@ -245,13 +245,17 @@ public class LevelManager extends InputManager {
 
     public void setServer(GameServer server) {
         this.server = server;
-        this.server.setLevelManager(this);
+        if (server != null) {
+            this.server.setLevelManager(this);
+        }
 
     }
 
     public void setClient(GameClient client) {
         this.client = client;
-        this.client.setLevelManager(this);
+        if (client != null) {
+            this.client.setLevelManager(this);
+        } else System.err.println("Clinent == null");
 
     }
 }

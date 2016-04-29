@@ -14,7 +14,6 @@ import sokoban.cells.Actable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -60,14 +59,15 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         }
         solid = true;
         dimentions = new int[]{7, 0, 7, 3};
-
+        int col = (int) (0xffffff*Math.random());
         if (level.screen != null) {
-            level.screen.putColorMap(this, new HashMap<Integer, Integer>() {{
-                put(0xc0a1ff, 0xff0000);
-            }});
+            level.screen.putColorMap(this, 0xc0a1ff, col);
+
+            //0xff0000
+
         } else colorFlag = true;
 
-        projectileType = Projectiles.ULTRARAY;
+        projectileType = Projectiles.BULLET;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         this.input = input;
     }
 
-    int i = 0;
+    int projetileIndex = 0;
 
     @Override
     public void tick() {
@@ -122,10 +122,10 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             if (input.left.isPressed()) xa--;
             if (input.right.isPressed()) xa++;
             if (input.act.isToggled()) act();
-            if (input.jump.isToggled()) {
+            if (input.jump.isToggled() && !isSwimming) {
 
-                i++;
-                i %= 2;
+                projetileIndex++;
+                projetileIndex %= 2;
 
                 isJumping = true;
                 solid = false;
@@ -138,6 +138,12 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             if (input.projectile.isPressed()) {
                 shoot = true;
             }
+
+            if (input.projectile.isToggled() && projectileType == Projectiles.BULLET) {
+                List<Integer> dir = getDirection();
+                new Bullet(level, x, y, dir.get(0), dir.get(1), this);
+
+            }
         } else {
             System.err.println("Player input is null");
         }
@@ -149,21 +155,21 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
 
         if (level.getTile(this.x >> 3, this.y >> 3).getId() == 3 && !isJumping) {
             isSwimming = true;
-        }
-        if (isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3) {
-            isSwimming = false;
-        }
+        } else isSwimming = false;
+//        if (isSwimming && level.getTile(this.x >> 3, this.y >> 3).getId() != 3) {
+//            isSwimming = false;
+//        }
 
         if (shoot && tickCount % 3 != 0) {
             List<Integer> dir = getDirection();
-            projectileType = Projectiles.values()[i];
+            projectileType = Projectiles.values()[projetileIndex];
 
             switch (projectileType) {
                 case ULTRARAY:
                     new UltraRay(level, x, y, dir.get(0), dir.get(1), this);
                     break;
                 case BULLET:
-//                    if (tickCount % 2 == 0)
+                    if (tickCount % 18 == 1)
                         new Bullet(level, x, y, dir.get(0), dir.get(1), this);
                     break;
             }
@@ -239,21 +245,23 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         int yTile = screen.sheet.playerLine;
 
         int walkingSpeed = 3;
-        int flipTop = (numSteps >> walkingSpeed) & 1;
+
+        int flipTop;
         int flipBottom;
 
         if (colorFlag) {
             System.out.println("Color map added in render");
-            level.screen.putColorMap(this, new HashMap<Integer, Integer>() {{
-                put(0xc0a1ff, 0xff0000);
-            }});
+            level.screen.putColorMap(this, 0xc0a1ff, 0xff0000);
             colorFlag = false;
         }
 
-
         if (!isJumping && !hit) {
+            flipTop = ((numSteps >> walkingSpeed) & 1);
             flipBottom = (numSteps >> walkingSpeed) & 1;
-        } else flipBottom = 1;
+        } else {
+            flipTop = 1;
+            flipBottom = 1;
+        }
 
         if (moveingDir == 1) {
             xTile += 2;
@@ -281,7 +289,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
 
 
 
-        if (isSwimming) {
+        if (isSwimming && !isJumping) {
             List<Integer> waterColor = new ArrayList<>(Arrays.asList(0xfa05f0, 0x4444ff, 0x0000ff, 0x8888ff));
 
             yOffset += 4;
