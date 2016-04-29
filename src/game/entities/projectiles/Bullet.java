@@ -48,7 +48,9 @@ public class Bullet extends Projectile {
         // TODO: 26.04.2016 something wrong with render
         screen.render(((int) (x+xv*lenght))-3, ((int) (y+yv*lenght))-8, sheet, 2, 0, 1, 16, this);
 
-        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), ((int) rad), -0xaa, this);
+        if (rad != 0) {
+            level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), ((int) rad), -0xaa, this);
+        }
 
     }
 
