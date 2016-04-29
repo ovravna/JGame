@@ -299,7 +299,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
 
 
         if (isSwimming && !isJumping) {
-            List<Integer> waterColor = new ArrayList<>(Arrays.asList(0xfa05f0, 0x4444ff, 0x0000ff, 0x8888ff));
+            List<Integer> waterColor = new ArrayList<>(Arrays.asList(Screen.BLANK, 0x4444ff, 0x0000ff, 0x8888ff));
 
             yOffset += 4;
             if ((tickCount%60)/15 == 0) {

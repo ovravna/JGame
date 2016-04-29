@@ -18,7 +18,9 @@ public class Screen {
     public static final byte BIT_MIRROR_X = 0b01;
     public static final byte BIT_MIRROR_Y = 0b10;
 
-    public static List<Integer> defaultIgnoreColors = Arrays.asList(0xfa05f0);
+    public static final int BLANK = 0xfa05f0;
+
+    public static List<Integer> defaultIgnoreColors = Arrays.asList(BLANK);
 
     public int[] pixels;
 
@@ -33,8 +35,8 @@ public class Screen {
     private Lighting lighting;
     public Graphics g;
 
-    public Map<Entity, Map<Integer, Integer>> entityColorMap = new HashMap<>();
-    public Map<Entity, List<Integer>> entityIgnoreColorMap = new HashMap<>();
+    private Map<Entity, Map<Integer, Integer>> entityColorMap = new HashMap<>();
+    private Map<Entity, List<Integer>> entityIgnoreColorMap = new HashMap<>();
 
 
     public Screen(int width, int height, SpriteSheet sheet) {
@@ -60,15 +62,11 @@ public class Screen {
         }
     }
 
-    public void putIgonreColorMap(Entity entity, List<Integer> ignoreColors) {
+    public void putIgonreMap(Entity entity, Integer... ignore) {
         if (!entityIgnoreColorMap.containsKey(entity)) {
-            entityIgnoreColorMap.put(entity, ignoreColors);
-        } else {
-            entityIgnoreColorMap.get(entity).addAll(ignoreColors);
-        }
-
+            entityIgnoreColorMap.put(entity, Arrays.asList(ignore));
+        } else entityIgnoreColorMap.get(entity).addAll(Arrays.asList(ignore));
     }
-
 
 
     public void render(int xPos, int yPos, int tile, int mirrorDir, int scale, Entity e) {
@@ -145,7 +143,7 @@ public class Screen {
                         col = colorMap.get(col);
                     }
                     if (setAllColors) col = fillColor;
-                    if (col == null) {
+                    if (col == null || col == BLANK) {
                         continue;
                     }
 
@@ -156,7 +154,8 @@ public class Screen {
                             if (xPixel+xScale < 0 || xPixel+xScale >= width)
                                 continue;
                             pixels[(xPixel+xScale)+(yPixel+yScale)*width] =
-                                    !lighting.renderLight ? col:colorSelector(col, lighting.lightCombiner((xPixel+xScale)+(yPixel+yScale)*width));
+                                    !lighting.renderLight ? col:
+                                            colorSelector(col, lighting.lightCombiner((xPixel+xScale)+(yPixel+yScale)*width));
                         }
                     }
                 }
