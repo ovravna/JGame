@@ -97,8 +97,8 @@ public class Game extends Canvas implements Runnable {
 
         try {
             thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException exeption) {
+            exeption.printStackTrace();
         }
     }
 
