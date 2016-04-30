@@ -50,7 +50,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
     }
 
     public Player(Level level, int x, int y, boolean isInputObject) {
-        super(level, x, y, 4);
+        super(level, x, y, 1);
         this.isInputObject = isInputObject;
 
 
@@ -70,7 +70,6 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             level.screen.putColorMap(this, 0xffd2a8, skinCol);
             level.screen.putColorMap(this, 0x5A3825, hairCol);
 //            level.screen.putColorMap(this, 0x070707, null);
-
 
             //0xff0000
 
