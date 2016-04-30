@@ -68,6 +68,7 @@ public class Game extends Canvas implements Runnable {
         frame.setVisible(true);
         this.start();
 
+
     }
 
     public synchronized void start() {

@@ -22,6 +22,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
     private boolean colorFlag;
     private InputHandler input;
     private int scale = 1;
+
     protected boolean isSwimming = false;
     private int tickCount = 0;
     private String username;
