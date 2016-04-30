@@ -50,7 +50,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
     }
 
     public Player(Level level, int x, int y, boolean isInputObject) {
-        super(level, x, y, 4);
+        super(level, x, y, 1);
         this.isInputObject = isInputObject;
 
 
