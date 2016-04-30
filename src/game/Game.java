@@ -77,7 +77,6 @@ public class Game extends Canvas implements Runnable {
 
         levelManager = new LevelManager(screen, new InputHandler(this));
         thread.start();
-
         if (!isApplet) {
             if (JOptionPane.showConfirmDialog(this, "Server?") == 0) {
                 socketServer = new GameServer(this);
