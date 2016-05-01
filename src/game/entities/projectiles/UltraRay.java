@@ -15,7 +15,7 @@ public class UltraRay extends Projectile {
 
     public UltraRay(Level level, int x, int y, int xv, int yv, Shooter shooter) {
         super(level, x, y, xv, yv,  3,  shooter);
-        this.damage = 40;
+        this.damage = 80;
         this.aliveTime = 50;
         sheet = new SpriteSheet("/box16x16.png");
         solid = true;
@@ -28,7 +28,7 @@ public class UltraRay extends Projectile {
         if (!(solid && hasColided(xv, yv))) {
             x += xv*speed;
             y += yv*speed;
-        } else if (!(getEntity(x, y) instanceof Projectile)) {
+        } else {
             rad += 0.5;
             aliveTime -= 8;
         }

@@ -86,7 +86,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
         this.input = input;
     }
 
-    int projetileIndex = 0;
+    int projetileIndex = 1;
 
     @Override
     public void tick() {
