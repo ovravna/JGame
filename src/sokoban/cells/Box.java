@@ -17,10 +17,7 @@ public class Box extends Mob {
         solid = true;
         pushable = true;
         dimentions = new int[]{14, 1, 14, 1};
-
-
     }
-
 
     @Override
     public void tick() {
