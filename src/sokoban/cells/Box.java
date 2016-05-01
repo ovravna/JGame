@@ -18,6 +18,7 @@ public class Box extends Mob {
         pushable = true;
         dimentions = new int[]{14, 1, 14, 1};
 
+
     }
 
 
@@ -42,7 +43,6 @@ public class Box extends Mob {
         if (renderLight) {
             level.lighting.renderRoundLight(x + 4, y + 7 , 6, -0x88, Light.SOFT, this);
         } else level.lighting.removeLightSource(this);
-
 
     }
 
