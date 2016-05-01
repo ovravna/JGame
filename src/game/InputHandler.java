@@ -15,7 +15,8 @@ public class InputHandler implements KeyListener {
     public Key restart = new Key();
     public Key meta_data = new Key();
     public Key light = new Key();
-    public Key span = new Key();
+    public Key spawn = new Key();
+    public Key swap = new Key();
 
 
     public Key projectile = new Key();
@@ -95,8 +96,14 @@ public class InputHandler implements KeyListener {
         }
 
         if (keyCode == KeyEvent.VK_Z) {
-            span.toggle(isPressed);
+            spawn.toggle(isPressed);
         }
+
+        if (keyCode == KeyEvent.VK_F) {
+            swap.toggle(isPressed);
+        }
+
+
 
 
     }

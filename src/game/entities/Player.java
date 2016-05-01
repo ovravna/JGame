@@ -135,15 +135,17 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             if (input.act.isToggled()) act();
             if (input.jump.isToggled() && !isSwimming && !isJumping) {
 
-                projetileIndex++;
-                projetileIndex %= 2;
-
                 isJumping = true;
                 solid = false;
                 jumpTime = tickCount;
             }
-            if (input.span.isToggled()) {
+            if (input.spawn.isToggled()) {
                 new Walker(level, (int) (100*Math.random()), (int) (100*Math.random()));
+            }
+
+            if (input.swap.isToggled()) {
+                projetileIndex++;
+                projetileIndex %= 2;
             }
 
             if (input.projectile.isPressed()) {
