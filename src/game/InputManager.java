@@ -15,7 +15,6 @@ public abstract class InputManager {
 
     }
 
-
     protected void setInput(InputHandler input) {
         this.input = input;
 
