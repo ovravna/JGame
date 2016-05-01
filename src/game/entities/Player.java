@@ -358,14 +358,12 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
 
     @Override
     public void shotHit(Entity victim) {
-//        System.out.println("Shot hit");
 
     }
 
     @Override
     public void shotKilled(Mob victim) {
         this.victim = victim;
-//        System.out.println("Shot KILLED");
         rad += 3.5;
 
         hasKilled = true;
