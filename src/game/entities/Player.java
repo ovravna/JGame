@@ -193,7 +193,6 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
             rad -= 0.05;
         }
 
-
         tickCount++;
     }
 
