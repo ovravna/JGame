@@ -73,8 +73,7 @@ public class Game extends Canvas implements Runnable {
 
     public synchronized void start() {
         running = true;
-        thread = new Thread(this);
-
+        thread = new Thread(this, "Game Tread");
         levelManager = new LevelManager(screen, new InputHandler(this));
         thread.start();
         if (!isApplet) {
