@@ -95,8 +95,8 @@ public class Game extends Canvas implements Runnable {
 
         try {
             thread.join();
-        } catch (InterruptedException exeption) {
-            exeption.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -199,7 +199,8 @@ public class Game extends Canvas implements Runnable {
 
     }
 
-    public static void main(String... args) {
+
+    public static void main(String... a) {
         new Game().start();
     }
 }
