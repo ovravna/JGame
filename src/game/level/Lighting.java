@@ -1,5 +1,6 @@
 package game.level;
 
+import game.Game;
 import game.entities.Entity;
 import game.gfx.Light;
 import game.gfx.Screen;
@@ -114,8 +115,11 @@ public class Lighting {
                                 +(int) ((b-filterColor)*diff+b));
 
                     } else {
-//                        light[xa+ya*width] = ((int) diff);
-                        light[xa+ya*width] = ((int) (whiteChan-filterColor/scale));
+                        light[xa+ya*width] = ((int) diff);
+                        if (Game.tickCount % 60 == 0 ) {
+                            System.out.println(Integer.toHexString(-light[xa+ya*width]));
+                        }
+//                        light[xa+ya*width] = ((int) (whiteChan-filterColor/scale));
 
                     }
 
