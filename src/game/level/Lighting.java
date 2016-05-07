@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public class Lighting {
 
+    public static final int BLANK = 0xfa05f0;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
     public static final int INITIAL_FILTER = -0xdf;
     public static int filterColor = INITIAL_FILTER;
@@ -61,15 +62,16 @@ public class Lighting {
 
         double distSqrd;
 
-        int alpha, r = 0, g = 0, b = 0;
+        int whiteChan, r = 0, g = 0, b = 0;
         if (Math.abs(filter) > 0xff) {
-            alpha = filter >> 24;
-            r = filter >> 16;
-            g = filter >> 8;
-            b = filter;
+            whiteChan = (filter >> 24)%0x100;
+            r = (filter >> 16)%0x100;
+            g = (filter >> 8)%0x100;
+            b = filter%0x100;
+
             rgbFilter = true;
 
-        } else alpha = filter;
+        } else whiteChan = filter;
 
         int xMin = x-radius < 0 ? 0:x-radius;
         int xMax = x+radius > width ? width:x+radius;
@@ -85,16 +87,25 @@ public class Lighting {
                 if (distSqrd < radSqrd) {
 
                     double diff = 1;
+                    double scale = 1;
 
                     if (lighting == Light.SOFT) {
-                        diff = ((int) ((filterColor*distSqrd)-alpha*(radSqrd-distSqrd))/radSqrd);
-//                        diff = (distance/radSqur);
-//                        System.out.println(distance);
+
+                        /*
+
+                         */
+                        diff = (filterColor*distSqrd-whiteChan*(radSqrd-distSqrd))/radSqrd;
+
+                        scale = (radSqrd-distSqrd)/radSqrd;
+
+
                     } else if (lighting == Light.HARD) {
-                        diff = alpha;
+                        diff = whiteChan;
                     }
 
-//                    System.out.println(temp.length);
+
+
+
                     if (rgbFilter) {
 //                        int f = (shade-a)/filterColor;
                         light[xa+ya*width] =
@@ -102,7 +113,14 @@ public class Lighting {
                                 +(((int) ((g-filterColor)*diff+g)) << 8)
                                 +(int) ((b-filterColor)*diff+b));
 
-                    } else light[xa+ya*width] = ((int) diff);
+                    } else {
+//                        light[xa+ya*width] = ((int) diff);
+                        light[xa+ya*width] = ((int) (whiteChan-filterColor/scale));
+
+                    }
+
+
+
 //                            -(int) ((filter-filterColor)*diff+filter);
 //                            (int) (filter * Math.sin(shade) + filterColor * Math.cos(shade));
 
@@ -188,30 +206,31 @@ public class Lighting {
         this.filterColor = filterColor;
     }
 
-    private static final int INITIAL_R = -0xffffff;
+    private static final int INITIAL_MAX = -0xffffff;
     public static int sources = 0;
 
     public Integer lightCombiner(int i) {
 
-        Integer r = INITIAL_R;
-        Integer temp;
+        Integer max = INITIAL_MAX;
+        Integer lightFromSource;
 
         sources = lightSources.size();
 
         for (Integer[] light : lightSources.values()) {
-            temp = light[i];
+            lightFromSource = light[i];
 
-            if (temp != null) {
-                r = temp > r ? temp > filterColor ? temp:filterColor:r;
+            if (lightFromSource != null && lightFromSource > max) {
+                max = lightFromSource > filterColor ? lightFromSource:filterColor;
             }
         }
 
-        if (r == INITIAL_R) {
-            r = null;
+
+        if (max == INITIAL_MAX) {
+            max = null;
         }
 
 
-        return r;
+        return max;
     }
 
     public void removeLightSource(Entity entity) {

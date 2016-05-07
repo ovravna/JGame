@@ -41,7 +41,6 @@ public class LevelManager extends InputManager {
         this.screen = screen;
         this.server = server;
         this.client = client;
-        //kake er godt
 
 
         if (this.server != null) {

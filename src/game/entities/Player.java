@@ -10,6 +10,7 @@ import game.entities.enemies.Walker;
 import game.entities.projectiles.*;
 import game.gfx.Screen;
 import game.level.Level;
+import game.level.Lighting;
 import sokoban.cells.Actable;
 
 import java.util.ArrayList;
@@ -302,7 +303,7 @@ public class Player extends Mob implements Actable, InputObject, Shooter {
 
 
         if (isSwimming && !isJumping) {
-            List<Integer> waterColor = new ArrayList<>(Arrays.asList(Screen.BLANK, 0x4444ff, 0x0000ff, 0x8888ff));
+            List<Integer> waterColor = new ArrayList<>(Arrays.asList(Lighting.BLANK, 0x4444ff, 0x0000ff, 0x8888ff));
 
             yOffset += 4;
             if ((tickCount%60)/15 == 0) {

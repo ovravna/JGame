@@ -18,9 +18,7 @@ public class Screen {
     public static final byte BIT_MIRROR_X = 0b01;
     public static final byte BIT_MIRROR_Y = 0b10;
 
-    public static final int BLANK = 0xfa05f0;
-
-    public static List<Integer> defaultIgnoreColors = Arrays.asList(BLANK);
+    public static List<Integer> defaultIgnoreColors = Arrays.asList(Lighting.BLANK);
 
     public int[] pixels;
 
@@ -143,7 +141,7 @@ public class Screen {
                         col = colorMap.get(col);
                     }
                     if (setAllColors) col = fillColor;
-                    if (col == null || col == BLANK) {
+                    if (col == null || col == Lighting.BLANK) {
                         continue;
                     }
 
@@ -153,9 +151,16 @@ public class Screen {
                         for (int xScale = 0;xScale < scale;xScale++) {
                             if (xPixel+xScale < 0 || xPixel+xScale >= width)
                                 continue;
-                            pixels[(xPixel+xScale)+(yPixel+yScale)*width] =
-                                    !lighting.renderLight ? col:
-                                            colorSelector(col, lighting.lightCombiner((xPixel+xScale)+(yPixel+yScale)*width));
+                            if (lighting.renderLight) {
+                                pixels[(xPixel+xScale)+(yPixel+yScale)*width] =
+                                        colorSelector(
+                                                col,
+                                                lighting.lightCombiner((xPixel+xScale)+(yPixel+yScale)*width)
+                                        );
+                            } else {
+                                pixels[(xPixel+xScale)+(yPixel+yScale)*width] = col;
+                            }
+
                         }
                     }
                 }
