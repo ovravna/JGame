@@ -54,22 +54,22 @@ public class Lighting {
 
         boolean rgbFilter = false;
 
-        int radSqur = radius*radius;
+        int radSqrd = radius*radius;
 
         x -= screen.xOffset-xOffset;
         y -= screen.yOffset-yOffset;
 
-        double distance;
+        double distSqrd;
 
-        int a, r = 0, g = 0, b = 0;
+        int alpha, r = 0, g = 0, b = 0;
         if (Math.abs(filter) > 0xff) {
-            a = filter >> 24;
+            alpha = filter >> 24;
             r = filter >> 16;
             g = filter >> 8;
             b = filter;
             rgbFilter = true;
 
-        } else a = filter;
+        } else alpha = filter;
 
         int xMin = x-radius < 0 ? 0:x-radius;
         int xMax = x+radius > width ? width:x+radius;
@@ -79,19 +79,19 @@ public class Lighting {
         for (int xa = xMin;xa < xMax;xa++) {
             for (int ya = yMin;ya < yMax;ya++) {
 
-                distance = (xa-x)*(xa-x) + (ya-y)*(ya-y);
+                distSqrd = (xa-x)*(xa-x) + (ya-y)*(ya-y);
 
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
-                if (distance < radSqur) {
+                if (distSqrd < radSqrd) {
 
                     double diff = 1;
 
                     if (lighting == Light.SOFT) {
-                        diff = ((int) ((filterColor*distance)-a*(radSqur-distance))/radSqur);
+                        diff = ((int) ((filterColor*distSqrd)-alpha*(radSqrd-distSqrd))/radSqrd);
 //                        diff = (distance/radSqur);
 //                        System.out.println(distance);
                     } else if (lighting == Light.HARD) {
-                        diff = a;
+                        diff = alpha;
                     }
 
 //                    System.out.println(temp.length);
@@ -99,8 +99,8 @@ public class Lighting {
 //                        int f = (shade-a)/filterColor;
                         light[xa+ya*width] =
                                 -((((int) ((r-filterColor)*diff+r)) << 16)
-                                        +(((int) ((g-filterColor)*diff+g)) << 8)
-                                        +(int) ((b-filterColor)*diff+b));
+                                +(((int) ((g-filterColor)*diff+g)) << 8)
+                                +(int) ((b-filterColor)*diff+b));
 
                     } else light[xa+ya*width] = ((int) diff);
 //                            -(int) ((filter-filterColor)*diff+filter);
