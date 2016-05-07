@@ -57,7 +57,7 @@ public class Game extends Canvas implements Runnable {
 
         frame = new JFrame(name);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
         frame.add(this, BorderLayout.CENTER);
@@ -77,7 +77,8 @@ public class Game extends Canvas implements Runnable {
         levelManager = new LevelManager(screen, new InputHandler(this));
         thread.start();
         if (!isApplet) {
-            if (JOptionPane.showConfirmDialog(this, "Server?") == 0) {
+            // JOptionPane.showConfirmDialog(this, "Server?") == 0
+            if (true) {
                 socketServer = new GameServer(this);
                 socketServer.start();
             }
