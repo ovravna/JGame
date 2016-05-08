@@ -13,7 +13,7 @@ public class Lighting {
 
     public static final int BLANK = 0xfa05f0;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = -0xbf;
+    public static final int INITIAL_FILTER = -0xCA;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -237,7 +237,13 @@ public class Lighting {
         for (Integer[] light : maxes) {
             lightFromSource = light[i];
 
-            if (lightFromSource != null && (max == null || lightFromSource > max)) {
+            if (lightFromSource == null) continue;
+
+//            if (Math.abs(lightFromSource) > 0xff) {
+//                lightFromSource = (lightFromSource >> 24)%0x100;
+//            }
+
+            if (max == null || lightFromSource > max) {
                 max = lightFromSource > filterColor ? lightFromSource : filterColor;
             }
         }

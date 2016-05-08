@@ -109,10 +109,7 @@ public class Menu extends Level implements InputObject {
         }
 
         if (input.up.isToggled()) {
-
             AudioPlayer.MENUOPTION.play();
-
-
             if (!showHelp) {
                 currentChoice--;
                 if (currentChoice == -1) {

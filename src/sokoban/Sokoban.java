@@ -70,7 +70,9 @@ public class Sokoban {
 
     public static Level init(String sokoban) {
         Level level = new Level(Sokoban.LEVEL);
-        level.addAudio(AudioPlayer.BG_MUSIC, true);
+
+        // bg musikk til sokoban
+        level.addAudio(AudioPlayer.BG_MUSIC, false);
 
 
         String[] sokobanSplit = sokoban.split("\\||\\n");

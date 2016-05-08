@@ -176,11 +176,11 @@ public class Screen {
 
     private int colorSelector(int color, Integer filter) {
         if (filter == null) {
-            return colorSelector(color, lighting.filterColor);
+            return colorSelector(color, Lighting.filterColor);
         }
-        if (filter > Math.abs(0xff)) {
-            int r = (filter/0x10000)%0x100;
-            int g = (filter/0x100)%0x100;
+        if (Math.abs(filter) > 0xff) {
+            int r = (filter >> 16)%0x100;
+            int g = (filter >> 8)%0x100;
             int b = filter%0x100;
 
             return colorSelector(color, r, g, b);

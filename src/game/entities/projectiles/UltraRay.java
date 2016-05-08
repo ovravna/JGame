@@ -45,7 +45,7 @@ public class UltraRay extends Projectile {
     public void render(Screen screen) {
 
 //        screen.render(((int) (x+xv*lenght))-3, ((int) (y+yv*lenght)) -8, sheet, 0, 0, 1, 16, this);
-        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), (int) (rad*Math.random() + 1), -(int) (0xcccccc*Math.random()), this);
+        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), (int) (rad*Math.random()+1), -(int) (0xcccccc*Math.random()), this);
 
 //        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), 1, 0xbb, Light.SQUARE , this);
 
