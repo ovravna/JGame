@@ -99,20 +99,13 @@ public class Lighting {
 
                     if (lighting == Light.SOFT) {
 
-                        /*
-
-                         */
                         diff = (filterColor*distSqrd-whiteChan*(radSqrd-distSqrd))/radSqrd;
 
                         scale = (radSqrd-distSqrd)/radSqrd;
 
-
                     } else if (lighting == Light.HARD) {
                         diff = whiteChan;
                     }
-
-
-
 
                     if (rgbFilter) {
 //                        int f = (shade-a)/filterColor;
@@ -120,7 +113,6 @@ public class Lighting {
                                 -((((int) ((r-filterColor)*diff+r)) << 16)
                                 +(((int) ((g-filterColor)*diff+g)) << 8)
                                 +(int) ((b-filterColor)*diff+b));
-
                     } else {
                         light[xa+ya*width] = ((int) diff);
 

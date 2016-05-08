@@ -103,7 +103,6 @@ public class LevelManager extends InputManager {
                 break;
             case TEST:
                 testLevel.isRenderingLight(true);
-                testLevel.setFilterColor(-0xfa);
 
 //                PlayerMP player = new PlayerMP(testLevel, 0, 0, "Kake", null, -1, true);
 //                System.out.println("Player LM "+player);
