@@ -4,7 +4,9 @@ import game.entities.Entity;
 import game.gfx.Light;
 import game.gfx.Screen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Lighting {
@@ -13,9 +15,10 @@ public class Lighting {
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
     public static final int INITIAL_FILTER = -0xbf;
     public static int filterColor = INITIAL_FILTER;
+    public static int sources = 0;
+
 
     public boolean renderLight = true;
-
     private Screen screen;
     private int width;
     private int height;
@@ -215,29 +218,29 @@ public class Lighting {
         this.filterColor = filterColor;
     }
 
-    private static final int INITIAL_MAX = -0xffffff;
-    public static int sources = 0;
 
     public Integer lightCombiner(int i) {
 
-        Integer max = INITIAL_MAX;
+
+        List<Integer[]> maxes = new ArrayList<>(lightSources.values());
+
+        Integer max;
+
+        if (!maxes.isEmpty()) {
+            max = maxes.remove(0)[i];
+        } else return null;
+
         Integer lightFromSource;
 
         sources = lightSources.size();
 
-        for (Integer[] light : lightSources.values()) {
+        for (Integer[] light : maxes) {
             lightFromSource = light[i];
 
-            if (lightFromSource != null && lightFromSource > max) {
-                max = lightFromSource > filterColor ? lightFromSource:filterColor;
+            if (lightFromSource != null && (max == null || lightFromSource > max)) {
+                max = lightFromSource > filterColor ? lightFromSource : filterColor;
             }
         }
-
-
-        if (max == INITIAL_MAX) {
-            max = null;
-        }
-
 
         return max;
     }
