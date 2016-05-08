@@ -1,5 +1,5 @@
 package game.gfx;
 
 public enum Light {
-    SOFT, HARD
+    SOFT, SQUARE, HARD
 }

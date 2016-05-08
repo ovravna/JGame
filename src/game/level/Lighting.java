@@ -1,6 +1,5 @@
 package game.level;
 
-import game.Game;
 import game.entities.Entity;
 import game.gfx.Light;
 import game.gfx.Screen;
@@ -12,7 +11,7 @@ public class Lighting {
 
     public static final int BLANK = 0xfa05f0;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = -0xdf;
+    public static final int INITIAL_FILTER = -0xbf;
     public static int filterColor = INITIAL_FILTER;
 
     public boolean renderLight = true;
@@ -82,10 +81,15 @@ public class Lighting {
         for (int xa = xMin;xa < xMax;xa++) {
             for (int ya = yMin;ya < yMax;ya++) {
 
-                distSqrd = (xa-x)*(xa-x) + (ya-y)*(ya-y);
 
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
-                if (distSqrd < radSqrd) {
+                //
+                distSqrd = (xa-x)*(xa-x) + (ya-y)*(ya-y);
+
+                if (lighting == Light.SQUARE) {
+                    light[xa+ya*width] = whiteChan;
+
+                } else if (distSqrd < radSqrd) {
 
                     double diff = 1;
                     double scale = 1;
@@ -116,9 +120,10 @@ public class Lighting {
 
                     } else {
                         light[xa+ya*width] = ((int) diff);
-                        if (Game.tickCount % 60 == 0 ) {
-                            System.out.println(Integer.toHexString(-light[xa+ya*width]));
-                        }
+
+//                        if (Game.tickCount % 60 == 0 ) {
+//                            System.out.println(Integer.toHexString(-light[xa+ya*width]));
+//                        }
 //                        light[xa+ya*width] = ((int) (whiteChan-filterColor/scale));
 
                     }

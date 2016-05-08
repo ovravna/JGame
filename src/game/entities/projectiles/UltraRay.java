@@ -14,7 +14,7 @@ public class UltraRay extends Projectile {
     private double rad = 2;
 
     public UltraRay(Level level, int x, int y, int xv, int yv, Shooter shooter) {
-        super(level, x, y, xv, yv,  3,  shooter);
+        super(level, x, y, xv, yv, 4,  shooter);
         this.damage = 80;
         this.aliveTime = 50;
         sheet = new SpriteSheet("/box16x16.png");
@@ -45,8 +45,9 @@ public class UltraRay extends Projectile {
     public void render(Screen screen) {
 
 //        screen.render(((int) (x+xv*lenght))-3, ((int) (y+yv*lenght)) -8, sheet, 0, 0, 1, 16, this);
-        level.lighting.renderRoundLight(((int) (x+xv*lenght)),
-                ((int) (y+yv*lenght)), (int) (rad*Math.random() + 1), -(int) (0xcccccc*Math.random()), this);
+        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), (int) (rad*Math.random() + 1), -(int) (0xcccccc*Math.random()), this);
+
+//        level.lighting.renderRoundLight(((int) (x+xv*lenght)), ((int) (y+yv*lenght)), 1, 0xbb, Light.SQUARE , this);
 
     }
 
