@@ -179,6 +179,11 @@ public class Screen {
             return colorSelector(color, Lighting.filterColor);
 //            return colorSelector(color, 0xee, 0x11, 0x11);
         }
+
+        if (filter.equals(Lighting.BLACK)) {
+        return 0xff000000;
+        }
+
         if (Math.abs(filter) > 0xff) {
             int r = (filter >> 16)%0x100;
             int g = (filter >> 8)%0x100;

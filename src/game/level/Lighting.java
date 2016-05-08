@@ -12,6 +12,7 @@ import java.util.List;
 public class Lighting {
 
     public static final int BLANK = 0xfa05f0;
+    public static final Integer BLACK = 0x123321;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
     public static final int INITIAL_FILTER = -0xaa;
     public static int filterColor = INITIAL_FILTER;
@@ -85,6 +86,12 @@ public class Lighting {
             for (int ya = yMin;ya < yMax;ya++) {
 
 
+                if (xa == xMin || xa == xMax-1 || ya == yMin || ya == yMax-1) {
+                    light[xa+ya*width] = BLACK;
+                    continue;
+                }
+
+
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
                 //
                 distSqrd = (xa-x)*(xa-x) + (ya-y)*(ya-y);
@@ -100,19 +107,29 @@ public class Lighting {
                     if (lighting == Light.SOFT) {
                         scale = (radSqrd-distSqrd)/radSqrd;
 
-//                        diff = (filterColor*distSqrd-whiteChan*scale);
-                        diff = rgbCalc(whiteChan, scale);
+                        diff = (filterColor*distSqrd-whiteChan*scale);
+//                        diff = rgbCalc(whiteChan, scale);
 
                     } else if (lighting == Light.HARD) {
                         diff = whiteChan;
                     }
 
                     if (rgbFilter) {
+                        int ra = rgbCalc(r, scale);
+                        int ga = rgbCalc(g, scale);
+                        int ba = rgbCalc(b, scale);
+
+                        int l = (ra << 16)+(ga << 8)+ba;
+//                        if (r < 0 || g < 0 || b < 0) {
+//                            l = -l;
+//                        }
+
+
 
 //                        int f = (shade-a)/filterColor;
 //                        System.out.println(scale);
-                        light[xa+ya*width] =
-                            ((rgbCalc(r, scale) << 16) + (rgbCalc(g, scale) << 8) + rgbCalc(b, scale));
+                        light[xa+ya*width] = l;
+//                            ((rgbCalc(r, scale) << 16) +| (rgbCalc(g, scale) << 8) + rgbCalc(b, scale));
                     } else {
                         light[xa+ya*width] = ((int) diff);
 
@@ -133,7 +150,14 @@ public class Lighting {
     }
 
     private int rgbCalc(Integer colorValue, double scale) {
-        int r = (int) ((colorValue-filterColor)*scale + filterColor) % 0x100;
+        int r = (int) ((colorValue-filterColor)*scale+filterColor);
+        if (r < 0) {
+            r = 0;
+        } else
+        if (r > 0xff) {
+            r = 0xff;
+        }
+
 
         return r;
     }
@@ -211,7 +235,7 @@ public class Lighting {
     }
 
     public void setFilterColor(int filterColor) {
-        this.filterColor = filterColor;
+        Lighting.filterColor = filterColor;
     }
 
 
@@ -234,6 +258,10 @@ public class Lighting {
             lightFromSource = light[i];
 
             if (lightFromSource == null) continue;
+
+            if (lightFromSource.equals(BLACK)) {
+                return BLACK;
+            }
 
             if (Math.abs(lightFromSource) > 0xff) {
                 if (max != null && Math.abs(max) > 0xff) {
