@@ -13,7 +13,7 @@ public class Lighting {
 
     public static final int BLANK = 0xfa05f0;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = -0xCA;
+    public static final int INITIAL_FILTER = -0xaa;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -98,21 +98,21 @@ public class Lighting {
                     double scale = 1;
 
                     if (lighting == Light.SOFT) {
-
-                        diff = (filterColor*distSqrd-whiteChan*(radSqrd-distSqrd))/radSqrd;
-
                         scale = (radSqrd-distSqrd)/radSqrd;
+
+//                        diff = (filterColor*distSqrd-whiteChan*scale);
+                        diff = rgbCalc(whiteChan, scale);
 
                     } else if (lighting == Light.HARD) {
                         diff = whiteChan;
                     }
 
                     if (rgbFilter) {
+
 //                        int f = (shade-a)/filterColor;
+//                        System.out.println(scale);
                         light[xa+ya*width] =
-                                -((((int) ((r-filterColor)*diff+r)) << 16)
-                                +(((int) ((g-filterColor)*diff+g)) << 8)
-                                +(int) ((b-filterColor)*diff+b));
+                            ((rgbCalc(r, scale) << 16) + (rgbCalc(g, scale) << 8) + rgbCalc(b, scale));
                     } else {
                         light[xa+ya*width] = ((int) diff);
 
@@ -123,8 +123,6 @@ public class Lighting {
 
                     }
 
-
-
 //                            -(int) ((filter-filterColor)*diff+filter);
 //                            (int) (filter * Math.sin(shade) + filterColor * Math.cos(shade));
 
@@ -132,6 +130,12 @@ public class Lighting {
             }
         }
         lightSources.put(this_entity, light);
+    }
+
+    private int rgbCalc(Integer colorValue, double scale) {
+        int r = (int) ((colorValue-filterColor)*scale + filterColor) % 0x100;
+
+        return r;
     }
 
 
@@ -231,9 +235,15 @@ public class Lighting {
 
             if (lightFromSource == null) continue;
 
-//            if (Math.abs(lightFromSource) > 0xff) {
+            if (Math.abs(lightFromSource) > 0xff) {
+                if (max != null && Math.abs(max) > 0xff) {
+                    max = lightFromSource > max ? lightFromSource:max;
+                } else {
+                    max = lightFromSource;
+                }
+                continue;
 //                lightFromSource = (lightFromSource >> 24)%0x100;
-//            }
+            }
 
             if (max == null || lightFromSource > max) {
                 max = lightFromSource > filterColor ? lightFromSource : filterColor;

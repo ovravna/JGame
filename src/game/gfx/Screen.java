@@ -177,6 +177,7 @@ public class Screen {
     private int colorSelector(int color, Integer filter) {
         if (filter == null) {
             return colorSelector(color, Lighting.filterColor);
+//            return colorSelector(color, 0xee, 0x11, 0x11);
         }
         if (Math.abs(filter) > 0xff) {
             int r = (filter >> 16)%0x100;
