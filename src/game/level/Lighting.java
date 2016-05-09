@@ -15,7 +15,7 @@ public class Lighting {
     public static final int BLANK = 0xfa05f0;
     public static final Integer BLACK = 0x123321;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = 0xaa;
+    public static final int INITIAL_FILTER = -0xaa;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -67,16 +67,24 @@ public class Lighting {
 
         double distSqrd;
 
-        int  r = 0, g = 0, b = 0;
+        int  r = -filter, g = -filter, b = -filter;
         if (Math.abs(filter) > 0xff) {
-            filter = 0xffffff-filter;
+            filter = ~filter;
             r = (filter >> 16)%0x100;
             g = (filter >> 8)%0x100;
             b = filter%0x100;
 
             rgbFilter = true;
+        }
 
-        } else filter = -filter;
+        int rf = filterColor, gf = filterColor, bf = filterColor;
+        if (Math.abs(filterColor) > 0xff) {
+            filterColor = ~filterColor;
+            rf = (filterColor >> 16)%0x100;
+            gf = (filterColor >> 8)%0x100;
+            bf = filterColor%0x100;
+
+        }
 
         int xMin = x-radius < 0 ? 0:x-radius;
         int xMax = x+radius > width ? width:x+radius;
@@ -101,16 +109,13 @@ public class Lighting {
                 } else if (distSqrd < radSqrd) {
 
                     if (rgbFilter && lighting == Light.SOFT) {
-                        int ra = rgbCalc(r, radSqrd, distSqrd);
-                        int ga = rgbCalc(g, radSqrd, distSqrd);
-                        int ba = rgbCalc(b, radSqrd, distSqrd);
+                        int ra = rgbCalc(r, rf, radSqrd, distSqrd);
+                        int ga = rgbCalc(g, gf, radSqrd, distSqrd);
+                        int ba = rgbCalc(b, bf, radSqrd, distSqrd);
                         light[xa+ya*width] = (ra << 16)+(ga << 8)+ba;
 
-                    } else if (lighting == Light.SOFT) {
-
-                        light[xa+ya*width] = rgbCalc(filter, radSqrd, distSqrd);
                     } else if (lighting == Light.HARD) {
-                        light[xa+ya*width] = 0xffffff - filter;
+                        light[xa+ya*width] = ~filter;
 
                     }
 
@@ -120,7 +125,7 @@ public class Lighting {
         lightSources.put(this_entity, light);
     }
 
-    private int rgbCalc(Integer colorValue, int radSqrd, double distSqrd) {
+    private int rgbCalc(Integer colorValue, int filterCol, int radSqrd, double distSqrd) {
 
         int r = (int) (((filterColor*distSqrd)-colorValue*(radSqrd-distSqrd))/radSqrd);
 
@@ -217,9 +222,6 @@ public class Lighting {
                 maxes.add(array);
             }
         }
-
-
-
 
         Integer max;
 
