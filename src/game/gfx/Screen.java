@@ -213,9 +213,9 @@ public class Screen {
         List<Integer> filters = Arrays.asList(rFilter, gFilter, bFilter);
 
         for (int i = 0;i < 3;i++) {
-            if      (rgb.get(i) - filters.get(i) < 0) rgb.set(i, 0);
-            else if (rgb.get(i) - filters.get(i) > 0xff) rgb.set(i, 0xff);
-            else    rgb.set(i, rgb.get(i) - filters.get(i));
+            if      (rgb.get(i) + filters.get(i) < 0) rgb.set(i, 0);
+            else if (rgb.get(i) + filters.get(i) > 0xff) rgb.set(i, 0xff);
+            else    rgb.set(i, rgb.get(i) + filters.get(i));
         }
 
         return (rgb.get(0) << 16)+(rgb.get(1) << 8)+rgb.get(2);

@@ -14,7 +14,7 @@ public class Lighting {
     public static final int BLANK = 0xfa05f0;
     public static final Integer BLACK = 0x123321;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = 0xaa;
+    public static final int INITIAL_FILTER = -0xaa;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -68,14 +68,14 @@ public class Lighting {
 
         int  r = 0, g = 0, b = 0;
         if (Math.abs(filter) > 0xff) {
-//            filter = 0xffffff-filter;
+            filter = 0xffffff-filter;
             r = (filter >> 16)%0x100;
             g = (filter >> 8)%0x100;
             b = filter%0x100;
 
             rgbFilter = true;
 
-        }
+        } else filter = -filter;
 
         int xMin = x-radius < 0 ? 0:x-radius;
         int xMax = x+radius > width ? width:x+radius;

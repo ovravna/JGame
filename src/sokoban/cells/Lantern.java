@@ -21,7 +21,7 @@ public class Lantern extends Mob implements Actable {
     private Actable actor;
 
     public Lantern(Level level, int x, int y) {
-        this(level, x, y, 0x99);
+        this(level, x, y, 0xFF3DD4);
     }
 
     public Lantern(Level level, int x, int y, int filter) {
