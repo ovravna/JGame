@@ -140,7 +140,9 @@ public class Screen {
                     if (mapColors && colorMap.containsKey(col)) {
                         col = colorMap.get(col);
                     }
-                    if (setAllColors) col = fillColor;
+//                    if (setAllColors) {
+//                        col = fillColor;
+//                    }
                     if (col == null || col == Lighting.BLANK) {
                         continue;
                     }
@@ -151,7 +153,13 @@ public class Screen {
                         for (int xScale = 0;xScale < scale;xScale++) {
                             if (xPixel+xScale < 0 || xPixel+xScale >= width)
                                 continue;
-                            if (lighting.renderLight) {
+
+                            if (setAllColors) {
+                                if (fillColor == Lighting.BLANK) {
+                                    continue;
+                                }
+                                pixels[(xPixel+xScale)+(yPixel+yScale)*width] = fillColor;
+                            } else if (lighting.renderLight) {
                                 pixels[(xPixel+xScale)+(yPixel+yScale)*width] =
                                         colorSelector(
                                                 col,
@@ -205,9 +213,9 @@ public class Screen {
         List<Integer> filters = Arrays.asList(rFilter, gFilter, bFilter);
 
         for (int i = 0;i < 3;i++) {
-            if (rgb.get(i) + filters.get(i) < 0) rgb.set(i, 0);
-            else if (rgb.get(i) + filters.get(i) > 0xff) rgb.set(i, 0xff);
-            else rgb.set(i, rgb.get(i)+filters.get(i));
+            if      (rgb.get(i) - filters.get(i) < 0) rgb.set(i, 0);
+            else if (rgb.get(i) - filters.get(i) > 0xff) rgb.set(i, 0xff);
+            else    rgb.set(i, rgb.get(i) - filters.get(i));
         }
 
         return (rgb.get(0) << 16)+(rgb.get(1) << 8)+rgb.get(2);

@@ -147,7 +147,7 @@ public class Walker extends Enemy implements Actable{
         }
 
         if (killed || dying > 0) {
-            level.lighting.renderRoundLight(xOffset, yOffset, ((int) (0.3*dying*dying)), -0xaa, 8, 4, this);
+            level.lighting.renderRoundLight(xOffset, yOffset, ((int) (0.3*dying*dying)), 0xaa, 8, 4, this);
 
             if (tickCount % 2 == 0) {
                 fillColor = 0x000000;

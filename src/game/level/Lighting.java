@@ -14,7 +14,7 @@ public class Lighting {
     public static final int BLANK = 0xfa05f0;
     public static final Integer BLACK = 0x123321;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = -0xaa;
+    public static final int INITIAL_FILTER = 0xaa;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -66,17 +66,16 @@ public class Lighting {
 
         double distSqrd;
 
-        int whiteChan, r = 0, g = 0, b = 0;
+        int  r = 0, g = 0, b = 0;
         if (Math.abs(filter) > 0xff) {
-            filter = 0xffffff-filter;
-            whiteChan = (filter >> 24)%0x100;
+//            filter = 0xffffff-filter;
             r = (filter >> 16)%0x100;
             g = (filter >> 8)%0x100;
             b = filter%0x100;
 
             rgbFilter = true;
 
-        } else whiteChan = filter;
+        }
 
         int xMin = x-radius < 0 ? 0:x-radius;
         int xMax = x+radius > width ? width:x+radius;
@@ -93,64 +92,26 @@ public class Lighting {
 //                    continue;
 //                }
 
-
-                // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
-                //
                 distSqrd = (xa-x)*(xa-x) + (ya-y)*(ya-y);
 
                 if (lighting == Light.SQUARE) {
-                    light[xa+ya*width] = whiteChan;
+                    light[xa+ya*width] = filter;
 
                 } else if (distSqrd < radSqrd) {
 
-                    double diff = 1;
-                    double scale = 1;
-
-                    if (lighting == Light.SOFT) {
-//                        scale = (radSqrd-distSqrd)/radSqrd;
-
-
-//                        diff =  ((filterColor*distSqrd)-whiteChan*(radSqrd-distSqrd))/radSqrd;
-
-                        diff = rgbCalc(whiteChan, radSqrd, distSqrd);
-
-//                        diff = (filterColor*distSqrd-whiteChan*scale);
-//                        diff = rgbCalc(whiteChan, scale);
-
-
-                    } else if (lighting == Light.HARD) {
-                        diff = whiteChan;
-                    }
-
-                    if (rgbFilter) {
+                    if (rgbFilter && lighting == Light.SOFT) {
                         int ra = rgbCalc(r, radSqrd, distSqrd);
                         int ga = rgbCalc(g, radSqrd, distSqrd);
                         int ba = rgbCalc(b, radSqrd, distSqrd);
+                        light[xa+ya*width] = (ra << 16)+(ga << 8)+ba;
 
-                        int l = (ra << 16)+(ga << 8)+ba;
-                        if (radSqrd < 4) {
+                    } else if (lighting == Light.SOFT) {
 
-                            l = filter;
-                        }
-
-
-
-//                        int f = (shade-a)/filterColor;
-//                        System.out.println(scale);
-                        light[xa+ya*width] = l;
-//                            ((rgbCalc(r, scale) << 16) +| (rgbCalc(g, scale) << 8) + rgbCalc(b, scale));
-                    } else {
-                        light[xa+ya*width] = ((int) diff);
-
-//                        if (Game.tickCount % 60 == 0 ) {
-//                            System.out.println(Integer.toHexString(-light[xa+ya*width]));
-//                        }
-//                        light[xa+ya*width] = ((int) (whiteChan-filterColor/scale));
+                        light[xa+ya*width] = rgbCalc(filter, radSqrd, distSqrd);
+                    } else if (lighting == Light.HARD) {
+                        light[xa+ya*width] = 0xffffff - filter;
 
                     }
-
-//                            -(int) ((filter-filterColor)*diff+filter);
-//                            (int) (filter * Math.sin(shade) + filterColor * Math.cos(shade));
 
                 } else light[xa+ya*width] = null;
             }
@@ -159,19 +120,8 @@ public class Lighting {
     }
 
     private int rgbCalc(Integer colorValue, int radSqrd, double distSqrd) {
-//        double scale = (radSqrd-distSqrd)/radSqrd;
-
 
         int r = (int) (((filterColor*distSqrd)-colorValue*(radSqrd-distSqrd))/radSqrd);
-
-//        int r = (int) ((colorValue-filterColor)*scale+filterColor);
-//        if (r < 0) {
-//            r = 0;
-//        } else
-//        if (r > 0xff) {
-//            r = 0xff;
-//        }
-
 
         return r;
     }

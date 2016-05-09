@@ -13,7 +13,6 @@ public class Lantern extends Mob implements Actable {
     private final SpriteSheet lanternSheet;
     private int filter;
     private int radius;
-    private LightPoint lightPoint;
 
     private boolean lastHeld;
     private static final int INITIAL_BOUNCETIME = 19;
@@ -22,7 +21,7 @@ public class Lantern extends Mob implements Actable {
     private Actable actor;
 
     public Lantern(Level level, int x, int y) {
-        this(level, x, y, 0xff5555);
+        this(level, x, y, 0x99);
     }
 
     public Lantern(Level level, int x, int y, int filter) {
