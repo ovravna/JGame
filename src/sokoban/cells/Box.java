@@ -4,12 +4,10 @@ import game.entities.Entity;
 import game.entities.Mob;
 import game.gfx.Light;
 import game.gfx.Screen;
-import game.gfx.SpriteSheet;
 import game.level.Level;
 
 public class Box extends Mob {
 
-    private SpriteSheet sheet = new SpriteSheet("/wall16x16.png");
     private boolean renderLight;
 
     public Box(Level level, int x, int y) {
@@ -38,7 +36,7 @@ public class Box extends Mob {
         screen.render(x, y, 5 + 5*8, 0, 1, 16, this);
 
         if (renderLight) {
-            level.lighting.renderRoundLight(x + 4, y + 7 , 6, -0x88, Light.SOFT, this);
+            level.lighting.renderRoundLight(x + 4, y + 7 , 6, 0x88, Light.SOFT, this);
         } else level.lighting.removeLightSource(this);
 
     }

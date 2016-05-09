@@ -5,6 +5,7 @@ import game.gfx.Light;
 import game.gfx.Screen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Lighting {
     public static final int BLANK = 0xfa05f0;
     public static final Integer BLACK = 0x123321;
     private HashMap<Entity, Integer[]> lightSources = new HashMap<>();
-    public static final int INITIAL_FILTER = -0xaa;
+    public static final int INITIAL_FILTER = 0xaa;
     public static int filterColor = INITIAL_FILTER;
     public static int sources = 0;
 
@@ -205,8 +206,20 @@ public class Lighting {
 
     public Integer lightCombiner(int i) {
 
+        List<Entity> keys = new ArrayList<>(lightSources.keySet());
+        List<Integer[]> maxes = new ArrayList<>();
 
-        List<Integer[]> maxes = new ArrayList<>(lightSources.values());
+        keys.sort(Collections.reverseOrder());
+
+        Integer[] array;
+        for (Entity entity : keys) {
+            if ((array = lightSources.get(entity)) != null) {
+                maxes.add(array);
+            }
+        }
+
+
+
 
         Integer max;
 
@@ -227,18 +240,9 @@ public class Lighting {
                 return BLACK;
             }
 
-            if (Math.abs(lightFromSource) > 0xff) {
-                if (max != null && Math.abs(max) > 0xff) {
-                    max = lightFromSource > max ? lightFromSource:max;
-                } else {
-                    max = lightFromSource;
-                }
-                continue;
-//                lightFromSource = (lightFromSource >> 24)%0x100;
-            }
 
             if (max == null || lightFromSource > max) {
-                max = lightFromSource > filterColor ? lightFromSource : filterColor;
+                max = lightFromSource;
             }
         }
 

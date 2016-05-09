@@ -168,7 +168,6 @@ public class Screen {
                             } else {
                                 pixels[(xPixel+xScale)+(yPixel+yScale)*width] = col;
                             }
-
                         }
                     }
                 }
@@ -189,7 +188,7 @@ public class Screen {
         }
 
         if (filter.equals(Lighting.BLACK)) {
-        return 0xff000000;
+            return 0xff000000;
         }
 
         if (Math.abs(filter) > 0xff) {
