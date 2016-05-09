@@ -87,10 +87,11 @@ public class Lighting {
             for (int ya = yMin;ya < yMax;ya++) {
 
 
-                if (xa == xMin || xa == xMax-1 || ya == yMin || ya == yMax-1) {
-                    light[xa+ya*width] = BLACK;
-                    continue;
-                }
+                //Tegn linjer på skjermen
+//                if (xa == xMin || xa == xMax-1 || ya == yMin || ya == yMax-1) {
+//                    light[xa+ya*width] = BLACK;
+//                    continue;
+//                }
 
 
                 // TODO: 14.04.2016 ender kode for håndtering av filter > 0xff
