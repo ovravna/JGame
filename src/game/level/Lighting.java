@@ -68,6 +68,7 @@ public class Lighting {
 
         int whiteChan, r = 0, g = 0, b = 0;
         if (Math.abs(filter) > 0xff) {
+            filter = 0xffffff-filter;
             whiteChan = (filter >> 24)%0x100;
             r = (filter >> 16)%0x100;
             g = (filter >> 8)%0x100;
@@ -105,24 +106,31 @@ public class Lighting {
                     double scale = 1;
 
                     if (lighting == Light.SOFT) {
-                        scale = (radSqrd-distSqrd)/radSqrd;
+//                        scale = (radSqrd-distSqrd)/radSqrd;
 
-                        diff = (filterColor*distSqrd-whiteChan*scale);
+
+//                        diff =  ((filterColor*distSqrd)-whiteChan*(radSqrd-distSqrd))/radSqrd;
+
+                        diff = rgbCalc(whiteChan, radSqrd, distSqrd);
+
+//                        diff = (filterColor*distSqrd-whiteChan*scale);
 //                        diff = rgbCalc(whiteChan, scale);
+
 
                     } else if (lighting == Light.HARD) {
                         diff = whiteChan;
                     }
 
                     if (rgbFilter) {
-                        int ra = rgbCalc(r, scale);
-                        int ga = rgbCalc(g, scale);
-                        int ba = rgbCalc(b, scale);
+                        int ra = rgbCalc(r, radSqrd, distSqrd);
+                        int ga = rgbCalc(g, radSqrd, distSqrd);
+                        int ba = rgbCalc(b, radSqrd, distSqrd);
 
                         int l = (ra << 16)+(ga << 8)+ba;
-//                        if (r < 0 || g < 0 || b < 0) {
-//                            l = -l;
-//                        }
+                        if (radSqrd < 4) {
+
+                            l = filter;
+                        }
 
 
 
@@ -149,14 +157,19 @@ public class Lighting {
         lightSources.put(this_entity, light);
     }
 
-    private int rgbCalc(Integer colorValue, double scale) {
-        int r = (int) ((colorValue-filterColor)*scale+filterColor);
-        if (r < 0) {
-            r = 0;
-        } else
-        if (r > 0xff) {
-            r = 0xff;
-        }
+    private int rgbCalc(Integer colorValue, int radSqrd, double distSqrd) {
+//        double scale = (radSqrd-distSqrd)/radSqrd;
+
+
+        int r = (int) (((filterColor*distSqrd)-colorValue*(radSqrd-distSqrd))/radSqrd);
+
+//        int r = (int) ((colorValue-filterColor)*scale+filterColor);
+//        if (r < 0) {
+//            r = 0;
+//        } else
+//        if (r > 0xff) {
+//            r = 0xff;
+//        }
 
 
         return r;
